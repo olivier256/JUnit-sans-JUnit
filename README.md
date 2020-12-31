@@ -1,5 +1,13 @@
 # JUnit-sans-JUnit
 On crée une classe dont le nom se termine par "Test",
+
+
 cette classe contient des méthodes dont le nom commence par "test",
-cette classe PEUT hériter de la classe Test, mais ce n'est pas obligé,
-il suffit ensuite de lancer Test.main().
+
+il suffit ensuite de lancer Test.test() et toutes les méthodes de test se lanceront.
+
+Si on veut aller plus loin,
+
+on fait hériter toutes ces classes de l'interface Test,
+
+et on lancer la méthode RunAllTests.main.
