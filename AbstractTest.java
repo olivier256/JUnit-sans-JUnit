@@ -12,11 +12,22 @@ import java.util.logging.Logger;
  * puissent être appelées par RunAllTests
  */
 public abstract class AbstractTest implements Test {
-	private static final Object[] emptyArray = new Object[] {};
+	private static final Object[] EMPTY_ARRAY = new Object[] {};
 	protected final Logger log;
 
+	/** Default constructor with simple logger */
 	protected AbstractTest(String className) {
 		log = Logger.getLogger(className);
+		checkAssertEnabled();
+	}
+
+	/** Constructor with specified Logger */
+	protected AbstractTest(Logger log) {
+		this.log = log;
+		checkAssertEnabled();
+	}
+
+	private void checkAssertEnabled() {
 		boolean assertEnabled = false;
 		assert assertEnabled = true;
 		if (!assertEnabled) {
@@ -29,9 +40,10 @@ public abstract class AbstractTest implements Test {
 			String methodName = method.getName();
 			if (methodName.startsWith("test") && !methodName.equals("test")) {
 				try {
-					method.invoke(this, emptyArray);
+					method.invoke(this, EMPTY_ARRAY);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					log.warning(methodName + ": " + e.getCause());
+					continue;
 				}
 				String msg = methodName + " OK";
 				log.info(msg);
