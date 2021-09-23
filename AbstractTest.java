@@ -13,21 +13,12 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractTest implements Test {
 	private static final Object[] EMPTY_ARRAY = new Object[] {};
-	protected final Logger log;
+	protected final String className;
+	protected Logger logger;
 
-	/** Default constructor with simple logger */
 	protected AbstractTest(String className) {
-		log = Logger.getLogger(className);
-		checkAssertEnabled();
-	}
-
-	/** Constructor with specified Logger */
-	protected AbstractTest(Logger log) {
-		this.log = log;
-		checkAssertEnabled();
-	}
-
-	private void checkAssertEnabled() {
+		logger = Logger.getLogger(className);
+		this.className = className;
 		boolean assertEnabled = false;
 		assert assertEnabled = true;
 		if (!assertEnabled) {
@@ -41,12 +32,12 @@ public abstract class AbstractTest implements Test {
 			if (methodName.startsWith("test") && !methodName.equals("test")) {
 				try {
 					method.invoke(this, EMPTY_ARRAY);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					log.warning(methodName + ": " + e.getCause());
-					continue;
+					logger.logp(Level.INFO, className, methodName, "OK");
+				} catch (IllegalAccessException | IllegalArgumentException e) {
+					logger.logp(Level.WARNING, className, methodName, e.getMessage());
+				} catch (InvocationTargetException e) {
+					logger.logp(Level.WARNING, className, methodName, e.getTargetException().toString());
 				}
-				String msg = methodName + " OK";
-				log.info(msg);
 			}
 		}
 	}
