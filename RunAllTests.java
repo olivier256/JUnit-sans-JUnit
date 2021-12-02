@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * Toutes les classes dans le classPath dont le nom se termine par Test verront
- * appelÈe leur mÈthode <CODE>test</CODE>. Il vient que les classes doivent
- * implÈmentÈes l'interface <CODE>Test</CODE>
+ * appel√©e leur m√©thode <CODE>test</CODE>. Il vient que les classes doivent
+ * impl√©ment√©es l'interface <CODE>Test</CODE>
  */
 public class RunAllTests {
 
@@ -83,7 +83,11 @@ public class RunAllTests {
 			try {
 				Test newInstance = (Test) _class.newInstance();
 				newInstance.test();
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException ) {
+				System.err.println("Est-ce qu'il existe bien un constructeur SANS param√®tre ?");
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				System.err.println("Est-ce que le constructeur vide est bien public ?");
 				e.printStackTrace();
 			}
 
